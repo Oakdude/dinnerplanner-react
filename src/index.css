@@ -1,0 +1,177 @@
+html, body {
+height: 100%;
+}
+
+
+.header1 {
+	color: white;
+	background-color: rgb(102, 204, 255);
+	font-size: 1.1em;
+	border-bottom: 2px solid #eee;
+  margin-bottom: 0;
+}
+
+
+form input {
+	width: 80px;
+	margin-left: 10px;
+}
+
+table {
+	margin-top: 15px;
+}
+.no-pointer {
+	pointer-events: none;
+}
+.img{
+	min-width: 260px;
+}
+img {
+
+    width: 250px;
+    height: 250px;
+    border: 10px solid #f8f8f8;
+}
+
+p {margin-top: 15px;}
+
+#dinnerOverviewHeader {
+	padding-bottom: 20px;
+	background-color: #f8f8f8;
+}
+
+
+#gallery {
+  margin-top: 50px;
+}
+
+#printout{
+	margin-top: 30px;
+}
+
+#findDishView h3 {
+	margin-left: 35px;
+	min-width: 300px;
+	flex-shrink: 2;
+}
+#findDishView {
+	background-color: #f8f8f8;
+}
+
+#welcomeText {
+	padding: 20px;
+	font-size: 1.2em;
+
+}
+#addedDishesTable {
+	border-top: 2px solid #ddd;
+}
+
+#sidebar {
+	background-color: #f8f8f8;
+	height: 100%;
+	font-size: 1.1em;
+	padding: 0;
+}
+
+
+.totalCost {
+	padding: 10px 20px;
+	font-size: 16pt;
+}
+
+
+#ingredientsCol {
+	background-color: lightyellow;
+	padding: 20px;
+	border: 5px solid #f8f8f8;
+}
+
+#preperationsCol {
+	margin-top: 30px;
+}
+
+.btn {
+	text-align: center;
+	background: rgb(102, 204, 255);
+	color: white;
+}
+
+.btn:hover {
+  box-shadow: 3px 5px 5px 0 rgba(0,0,0,0.2);
+}
+
+#searchBtn {
+	padding: 5px;
+	width:100px;
+
+}
+
+#confirmDinnerBtn {
+	width: 60%;
+	margin-top: 50px;
+	margin-bottom: 30px;
+	min-width: 160px;
+	max-width: 200px;
+}
+
+#backEditDinnerBtn{
+	margin-top: 20px;
+}
+
+#recipeBtn {
+	margin: 30px;
+}
+
+.navbar-header h2 {
+	padding-left: 10px;
+}
+
+#welcomeDiv {
+	margin-top: 5%;
+}
+
+#row {
+	margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  	margin-top: 0;
+}
+
+
+.placeholders {
+
+  	margin-bottom: 30px;
+  	text-align: center;
+}
+.placeholders h4 {
+	padding: 10px;
+  	margin-bottom: 0;
+  	font-weight: bold;
+  	font-size: 15pt;
+		max-height: 42px;
+
+}
+.placeholder {
+  	margin-bottom: 50px;
+
+}
+.placeholder img {
+  	display: inline-block;
+
+}
