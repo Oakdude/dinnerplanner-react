@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import Welcome from "./Welcome/Welcome";
+import Welcome from "./Welcome/Welcome.jsx";
 import modelInstance from "./data/DinnerModel";
-import SelectDish from "./SelectDish/SelectDish";
+import SelectDish from "./SelectDish/SelectDish.jsx";
+import DinnerOverview from "./DinnerOverview/DinnerOverview.jsx";
+import DishDetails from "./DishDetails/DishDetails.jsx";
 import "./App.css";
 
 class App extends Component {
@@ -24,6 +26,16 @@ class App extends Component {
             path="/search"
             render={() => <SelectDish model={modelInstance} />}
           />
+          <Route
+            path="/overview"
+            render={() => <DinnerOverview model={modelInstance} />}
+          />
+          <Route
+            path="/dish/:dishID"
+            
+            component={DishDetails}
+          />
+
         </header>
       </div>
     );
