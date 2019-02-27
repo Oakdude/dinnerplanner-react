@@ -22,20 +22,29 @@ class DishDetails extends Component {
 ingredients = function(){
   var ingredients = [];
   var num = 1;
+  let p = this.state.numberOfGuests;
   for(let ingredient of this.state.ingredients){
 
-    ingredients.push(<tr key={num}><td>{ingredient.amount.toFixed(2) + " " + ingredient.unit}
-     </td><td>{ingredient.name}</td><td>SEK</td><td>{1*ingredient.amount}</td></tr>)
+    ingredients.push(<tr key={num}><td>{p*ingredient.amount.toFixed(2) + " " + ingredient.unit}
+  </td><td>{ingredient.name}</td><td>SEK</td><td>{p*1.5*ingredient.amount}</td></tr>)
     num ++;
   }
 
   return ingredients;
 }
 
+update() {
+  this.setState({
+    numberOfGuests: this.props.model.getNumberOfGuests()
+  });
+}
+
+
 componentDidMount() {
   // when data is retrieved we update the state
   // this will cause the component to re-render
-  console.log(this.props.location.para.title + "hejhej");
+  //console.log(this.props.location.para.title + "hejhej");
+  this.props.model.addObserver(this);
   modelInstance
     .fetchDish(this.props.match.params.dishID)
     .then(dish => {
@@ -54,7 +63,22 @@ componentDidMount() {
     });
 }
 
+// this is called when component is removed from the DOM
+// good place to remove observer
+componentWillUnmount() {
+  this.props.model.removeObserver(this);
+}
 
+onClick = () => {
+  modelInstance.addDishToMenu(this.props.match.params.dishID);
+  ;
+}
+
+getDishPrice(a) {
+
+  let price = a*this.state.numberOfGuests;
+  return price.toFixed(2);
+}
 
   render() {
     let dishPage = null;
@@ -63,7 +87,7 @@ componentDidMount() {
         dishPage = <div className='container loader'></div>;
         break;
       case "LOADED":
-
+        let p = this.state.numberOfGuests;
         dishPage = this.state.dish.map(dish => (
           <React.Fragment key="1">
           <div className="col-md-4 text-left">
@@ -71,7 +95,8 @@ componentDidMount() {
            <div id="dishImg">
              <img src={dish.image} alt="bild"></img>
            </div>
-           <p id="dishSummaryDiv">sdfsdfsdfsdfsdf</p>
+           <p>{modelInstance.summary}</p>
+
            <Link to="/search">
              <button id="backToMainButton" type="button" className="btn btn-md"><span>Back to search</span></button>
            </Link>
@@ -92,10 +117,13 @@ componentDidMount() {
                   </tbody>
               </table>
               <div>
-                <button id="addToMenuButton" type="button" className="btn btn-md"><span>Add dish to menu</span></button>
-                <div id="ingredientsViewCost" className="text-right totalCost">
+                <button id="addToMenuButton" type="button" className="btn btn-md"
+                  onClick={this.onClick}><span>Add dish to menu</span>
+                </button>
 
-                </div>
+                <h3 id="ingredientsViewCost" className="text-right totalCost">
+                  Total: {this.getDishPrice(dish.pricePerServing)} SEK
+                </h3>
               </div>
 
           </div>
@@ -118,10 +146,9 @@ componentDidMount() {
     return (
       <React.Fragment>
       <Sidebar model={this.props.model} />
-        <div id="view3" className="col-sm-10 col-sm-offset-2 main">
+        <div id="view3" className="col-sm-10">
             <div id="dishDetails" className="col-md-12">
               {dishPage}
-
             </div>
         </div>
       </React.Fragment>

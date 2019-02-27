@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Sidebar.css";
+import modelInstance from "../data/DinnerModel";
 import { Link } from "react-router-dom";
 
 class Sidebar extends Component {
@@ -8,26 +9,52 @@ class Sidebar extends Component {
 
     // we put on state the properties we want to use and modify in the component
     this.state = {
-      //numberOfGuests: this.props.model.getNumberOfGuests()
+      menu: this.updateSidebar(),
+      numberOfGuests: this.props.model.getNumberOfGuests()
     };
   }
 
   // this methods is called by React lifecycle when the
   // component is actually shown to the user (mounted to DOM)
   // that's a good place to setup model observer
+
+  updateSidebar() {
+    console.log("ran update sidebar")
+    /*let savedMenu = localStorage.getItem("menu");
+    if(savedMenu != null) {
+      let savedMenu1 = JSON.parse(savedMenu);
+      console.log(savedMenu1);
+    }
+    console.log("localMenu from sidebar: ", savedMenu);*/
+    if(modelInstance.menu.length > 0){
+      let array = [];
+      let dishesArr = this.props.model.getMenuNameAndCost();
+      let a = this.props.model.getNumberOfGuests();
+      let num = 0;
+      for(let dish of dishesArr){
+    		array.push(<tr key={num}><th>{dish[0]}</th><th>{(dish[1]*a).toFixed(2)}</th></tr>);
+        num++;
+        this.setState({
+          menu: array
+        });
+    }}
+  }
   componentDidMount() {
-    //this.props.model.addObserver(this);
+    this.props.model.addObserver(this);
+    this.updateSidebar();
+
   }
 
   // this is called when component is removed from the DOM
   // good place to remove observer
   componentWillUnmount() {
-    //this.props.model.removeObserver(this);
+    this.props.model.removeObserver(this);
   }
 
   // in our update function we modify the state which will
   // cause the component to re-render
   update() {
+    this.updateSidebar();
     this.setState({
       numberOfGuests: this.props.model.getNumberOfGuests()
     });
@@ -35,9 +62,10 @@ class Sidebar extends Component {
 
   // our handler for the input's on change event
   onNumberOfGuestsChanged = e => {
-    //this.props.model.setNumberOfGuests(e.target.value);
+    this.props.model.setNumberOfGuests(e.target.value);
 
   };
+
 
   render() {
     return (
@@ -69,6 +97,7 @@ class Sidebar extends Component {
                     <label htmlFor="numberOfGuests">People</label>
                     <input
                       type="number"
+                      min="1"
                       value={this.state.numberOfGuests}
                       onChange={this.onNumberOfGuestsChanged}
                     />
@@ -85,14 +114,14 @@ class Sidebar extends Component {
                     </tr>
                   </thead>
                   <tbody id="sidebarTable">
-
+                    {this.state.menu}
 
                   </tbody>
                 </table>
               </div>
 
             <div id="sidebarTotalCost" className="text-right totalCost">
-
+              {modelInstance.getTotalMenuPrice()} SEK
             </div>
 
             <div className="text-center">

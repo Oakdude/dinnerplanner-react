@@ -4,6 +4,7 @@ import Welcome from "./Welcome/Welcome.jsx";
 import modelInstance from "./data/DinnerModel";
 import SelectDish from "./SelectDish/SelectDish.jsx";
 import DinnerOverview from "./DinnerOverview/DinnerOverview.jsx";
+import DinnerPrintout from "./DinnerPrintout/DinnerPrintout.jsx";
 import DishDetails from "./DishDetails/DishDetails.jsx";
 import "./App.css";
 
@@ -27,13 +28,16 @@ class App extends Component {
             render={() => <SelectDish model={modelInstance} />}
           />
           <Route
+            path="/dish/:dishID"
+            render={(props) => <DishDetails {...props} model={modelInstance} />}
+          />
+          <Route
             path="/overview"
             render={() => <DinnerOverview model={modelInstance} />}
           />
           <Route
-            path="/dish/:dishID"
-            
-            component={DishDetails}
+            path="/printout"
+            render={() => <DinnerPrintout model={modelInstance} />}
           />
 
         </header>

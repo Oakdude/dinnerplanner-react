@@ -17,15 +17,9 @@ class Dishes extends Component {
     };
   }
 
-  // this methods is called by React lifecycle when the
-  // component is actually shown to the user (mounted to DOM)
-  // that's a good place to call the API and get the data
-  componentDidMount() {
-    // when data is retrieved we update the state
-    // this will cause the component to re-render
-    console.log(this.props.dishType + " in Dishes mount");
+  getDishes(type, search) {
     modelInstance
-      .getAllDishes("",this.props.dishType)
+      .getAllDishes(search,type)
       .then(dishes => {
 
         this.setState({
@@ -41,8 +35,17 @@ class Dishes extends Component {
       });
   }
 
+  // this methods is called by React lifecycle when the
+  // component is actually shown to the user (mounted to DOM)
+  // that's a good place to call the API and get the data
+  componentDidMount() {
+
+    this.getDishes(this.props.dishSearch, this.props.dishType);
+  }
+
   componentWillReceiveProps(newProps) {
-    console.log(newProps.dishType + " in Dishes mount 2");
+
+    this.getDishes(newProps.dishSearch, newProps.dishType);
   }
 
   setSelectedDish(id) {
@@ -59,13 +62,13 @@ class Dishes extends Component {
         dishesList = <em>Loading...</em>;
         break;
       case "LOADED":
-        console.log(this.props.dishType + " in Dishes render");
+
         var url = "https://spoonacular.com/recipeImages/";
 
         dishesList = this.state.dishes.map(dish => (
 
 
-          <Link key={dish.id} to={{pathname: "/dish/" + dish.id, para: dish}}>
+          <Link key={dish.id} to={{pathname: "/dish/" + dish.id}}>
           <div key={dish.id} id={dish.id} className="col-xs-12 col-sm-6 col-md-4 col-lg-3 placeholder dishSelector">
               <img className="no-pointer" src={url+dish.image} alt="bild"/>
               <div className="no-pointer">

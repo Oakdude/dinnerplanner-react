@@ -9,16 +9,34 @@ const httpOptions = {
 class DinnerModel extends ObservableModel {
   constructor() {
     super();
-    this.numberOfGuests = 4;
+    this.numberOfGuests;
     this.types = ['all','main course', 'side dish', 'dessert', 'appetizer', 'salad', 'bread', 'breakfast', 'soup', 'beverage', 'sauce', 'drink'];
     this.getNumberOfGuests();
     this.selectedDish = 1;
+    this.menu;
+
+    if(localStorage.getItem("menu") === null) {
+      this.menu = [];
+      }else {
+          this.menu = JSON.parse(localStorage.getItem("menu"));
+      }
+
+      if(localStorage.getItem("guests") === null) {
+        this.numberOfGuests = 1;
+      } else {
+          this.numberOfGuests = localStorage.getItem("guests");
+        }
+
   }
 
   /**
    * Get the number of guestshttps://spoonacular-recipe-food-nutrition-v1.p.mashape.com
    * @returns {number}
    */
+
+  getMenu() {
+    return this.menu;
+  }
   setSelectedDish2(id){
     this.selectedDish = id;
     console.log(id);
@@ -41,6 +59,16 @@ class DinnerModel extends ObservableModel {
 	  });
   }
 
+  getTotalMenuPrice() {
+        let priceMenu = 0;
+
+        for (let dish of this.menu) {
+            priceMenu += dish.pricePerServing;
+        }
+				var a = this.getNumberOfGuests();
+        return priceMenu.toFixed(2)*a;
+}
+
 /*  getIngredients(array) {
     var ingredients = [];
     for(let ingredient of array){
@@ -50,12 +78,41 @@ class DinnerModel extends ObservableModel {
     return ingredients;
   }*/
 
+  fetchDishSummary(id) {
+		var url = BASE_URL + "recipes/" + id + "/summary";
+		return fetch(url,{
+	            headers:{
+	                "X-Mashape-Key": API_KEY,
+	                "Access-Control-Allow-Origin" : "http://sunset.nada.kth.se:8080/iprog/group/33/recipes/"
+	            }
+	      }).then(this.processResponse)
+          .then(data => data.summary);
+        }
+
+  getMenuNameAndCost() {
+	let menuNameAndCost = [];
+	for(var dish of this.menu){
+		menuNameAndCost.push([dish.title, dish.pricePerServing]);
+	}
+	return menuNameAndCost;
+	}
+
+  addDishToMenu(id) {
+
+      this.fetchDish(id).then(dish => {
+      		this.menu.push(dish[0]);
+          localStorage.setItem("menu", JSON.stringify(this.menu));
+      		this.notifyObservers("dishAddedToMenu");
+      	})
+
+      }
   /**
    * Set number of guests
    * @param {number} num
    */
   setNumberOfGuests(num) {
     this.numberOfGuests = num;
+    localStorage.setItem("guests", num);
     this.notifyObservers();
   }
 
@@ -72,6 +129,7 @@ class DinnerModel extends ObservableModel {
   	        .then(data => data);
 
   	}
+
 
   /**
    * Do an API call to the search API endpoint.
@@ -98,4 +156,5 @@ class DinnerModel extends ObservableModel {
 
 // Export an instance of DinnerModel
 const modelInstance = new DinnerModel();
+modelInstance.addDishToMenu()
 export default modelInstance;

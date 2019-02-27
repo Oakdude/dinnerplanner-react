@@ -39,6 +39,9 @@ p {margin-top: 15px;}
 	padding-bottom: 20px;
 	background-color: #f8f8f8;
 }
+#guestsView5and6 {
+	min-width: 160px;
+}
 
 #searchInput{
 	margin-left: 0
@@ -105,9 +108,18 @@ p {margin-top: 15px;}
 }
 
 #searchBtn {
+	margin-left: 1px;
 	padding: 5px;
-	width:100px;
+	width:90px;
 
+}
+
+#desc h2 {
+	margin-top: 0;
+}
+
+#backToMainButton {
+	margin-top: 20px;
 }
 
 #confirmDinnerBtn {
@@ -116,6 +128,10 @@ p {margin-top: 15px;}
 	margin-bottom: 30px;
 	min-width: 160px;
 	max-width: 200px;
+}
+#overviewTitles {
+	height: auto;
+	min-height: 60px;
 }
 
 #backEditDinnerBtn{
@@ -134,7 +150,7 @@ p {margin-top: 15px;}
 	margin-top: 5%;
 }
 
-#row {
+#overview {
 	margin-top: 20px;
 }
 
@@ -143,6 +159,20 @@ p {margin-top: 15px;}
   .main {
     padding-right: 40px;
     padding-left: 40px;
+  }
+	.sidebar {
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+    border-right: 2px solid #eee;
+
   }
 }
 .main .page-header {

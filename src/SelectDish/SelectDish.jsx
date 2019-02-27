@@ -12,10 +12,14 @@ class SelectDish extends Component {
 
     // we put on state the properties we want to use and modify in the component
     this.state = {
+      numberOfGuests: this.props.model.getNumberOfGuests(),
+      search: "",
       types: this.props.model.getTypes(),
       currentType: "all"
 
     };
+    this.inputChanged = this.inputChanged.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
@@ -57,6 +61,15 @@ class SelectDish extends Component {
     console.log(this.currentType);
   }
 
+  inputChanged(e) {
+    this.setState({search: e.target.value});
+
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+  }
+
   render() {
     return (
       <div className="SelectDish">
@@ -68,8 +81,9 @@ class SelectDish extends Component {
               <h3>FIND DISH</h3>
               <nav className="navbar navbar-expand-lg">
                 <div id="navbarSupportedContent">
-                  <form className="form-inline mr-auto">
-                    <input id="searchInput" className="form-control input-group-lg" type="text" placeholder="Search"/>
+                  <form className="form-inline mr-auto" onSubmit={this.handleSubmit}>
+                    <input id="searchInput" className="form-control input-group-lg" type="text" placeholder="Search"
+                      value={this.state.search} onChange={this.inputChanged}/>
                     <select onChange={this.typeChanged} id="dishTypeSelector" className="form-control input-group-lg">
 
                       {this.types()}
@@ -84,7 +98,7 @@ class SelectDish extends Component {
             <div className="col-sm-12 col-off">
               <div id="gallery" className="row placeholders">
 
-                <Dishes model={modelInstance} dishType={this.state.currentType} />
+                <Dishes model={modelInstance} dishSearch={this.state.search} dishType={this.state.currentType} />
 
               </div>
             </div>
